@@ -16,6 +16,8 @@ export default class BootScene extends Phaser.Scene {
         this.load.image('cell_flag',        'assets/images/cell_flag.png');
         this.load.image('cell_card',        'assets/images/cell_card.png');
         this.load.image('bg',               'assets/images/bg.png');
+        this.load.image('bg1',              'assets/images/watame-swe_bg1.png');
+        this.load.image('bg2',              'assets/images/watame-swe_bg2.png');
         this.load.image('card_ui_frame',    'assets/images/card_ui_frame.png');
         this.load.image('jamming_effect',   'assets/images/jamming_effect.png');
         this.load.audio('bgm',      'assets/audio/bgm.ogg');

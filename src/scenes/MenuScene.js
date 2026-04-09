@@ -1,8 +1,12 @@
+function _randomBg() {
+    return Math.random() < 0.5 ? 'bg1' : 'bg2';
+}
+
 export default class MenuScene extends Phaser.Scene {
     constructor() { super('MenuScene'); }
 
     create() {
-        this.add.image(400, 300, 'bg');
+        this.add.image(400, 300, _randomBg());
 
         this.add.text(400, 180, 'わためは悪くないよねぇ', {
             fontSize: '28px', fill: '#ffffff'

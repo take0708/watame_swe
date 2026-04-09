@@ -3,6 +3,10 @@ import Jamming from '../entities/Jamming.js';
 import CardManager from '../entities/CardManager.js';
 import { STAGES, CELL_SIZE } from '../utils/constants.js';
 
+function _randomBg() {
+    return Math.random() < 0.5 ? 'bg1' : 'bg2';
+}
+
 export default class GameScene extends Phaser.Scene {
     constructor() { super('GameScene'); }
 
@@ -16,6 +20,8 @@ export default class GameScene extends Phaser.Scene {
     create() {
         const { cols, rows, mines, cards, jamRate } = this.currentStage;
         this.jamRate = jamRate;
+
+        this.add.image(400, 300, _randomBg()).setDisplaySize(800, 600);
 
         this.board   = new Board(cols, rows, mines, cards);
         this.jamming = new Jamming(this);
