@@ -54,9 +54,30 @@ export default class MenuScene extends Phaser.Scene {
         const TABS = ['遊び方', 'カード一覧'];
         let activeTab = 0;
 
-        // タブ切り替えでページを差し替えるため、ページコンテナを用意
+        // ページコンテナ
         let pageContainer = this.add.container(0, 0);
         overlay.add(pageContainer);
+
+        const tabLine = this.add.graphics();
+        overlay.add(tabLine);
+
+        // ── ページ描画ロジック（先に定義）──────────────
+
+        const _buildPage = (tab, container) => {
+            if (tab === 0) this._buildRulesPage(container);
+            else           this._buildCardsPage(container);
+        };
+
+        const _refreshTabs = () => {
+            tabBtns.forEach((btn, idx) => {
+                btn.setStyle({ color: idx === activeTab ? '#ffffff' : '#556677' });
+            });
+            tabLine.clear();
+            tabLine.lineStyle(2, 0x4488ff).lineBetween(
+                210 + activeTab * 200 - 40, 56,
+                210 + activeTab * 200 + 40, 56
+            );
+        };
 
         // タブボタン生成
         const tabBtns = TABS.map((label, idx) => {
@@ -76,21 +97,6 @@ export default class MenuScene extends Phaser.Scene {
             return btn;
         });
 
-        const _refreshTabs = () => {
-            tabBtns.forEach((btn, idx) => {
-                btn.setStyle({ color: idx === activeTab ? '#ffffff' : '#556677' });
-            });
-            // アクティブ下線
-            tabLine.clear();
-            tabLine.lineStyle(2, 0x4488ff).lineBetween(
-                210 + activeTab * 200 - 40, 56,
-                210 + activeTab * 200 + 40, 56
-            );
-        };
-
-        const tabLine = this.add.graphics();
-        overlay.add(tabLine);
-
         // 仕切り線
         const divLine = this.add.graphics();
         divLine.lineStyle(1, 0x223344).lineBetween(30, 62, 770, 62);
@@ -108,13 +114,6 @@ export default class MenuScene extends Phaser.Scene {
         closeBtn.on('pointerout',   () => closeBtn.setStyle({ color: '#778899' }));
         closeBtn.on('pointerdown',  () => overlay.destroy());
         overlay.add(closeBtn);
-
-        // ── ページ描画ロジック ──────────────────────────
-
-        const _buildPage = (tab, container) => {
-            if (tab === 0) this._buildRulesPage(container);
-            else           this._buildCardsPage(container);
-        };
     }
 
     // ── 遊び方ページ ──────────────────────────────────────
