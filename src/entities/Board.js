@@ -37,14 +37,20 @@ export default class Board {
             this.grid[y][x].isMine = true;
         }
 
-        // Step 3: カードマス配置
+        // Step 3: カードマス配置（カード同士が隣接しないよう間隔を確保）
         const nonMine = allCoords.filter(({ x, y }) => !this.grid[y][x].isMine);
         shuffleArray(nonMine);
         const cardKeys = Object.keys(CARDS);
-        for (let i = 0; i < Math.min(cardCount, nonMine.length); i++) {
+        let placed = 0;
+        for (let i = 0; i < nonMine.length && placed < cardCount; i++) {
             const { x, y } = nonMine[i];
+            // 隣接8マスにすでにカードがあればスキップ
+            const hasAdjacentCard = getNeighbors(x, y, cols, rows)
+                .some(({ x: nx, y: ny }) => this.grid[ny][nx].isCard);
+            if (hasAdjacentCard) continue;
             this.grid[y][x].isCard = true;
             this.grid[y][x].cardId = cardKeys[Math.floor(Math.random() * cardKeys.length)];
+            placed++;
         }
 
         // Step 4: neighborMines 計算
@@ -85,10 +91,11 @@ export default class Board {
         this.revealedCount++;
         const changed = [cell];
 
-        if (!cell.isMine && cell.neighborMines === 0) {
+        // カードマス自身を flood fill の起点にしない（隣接カードへの連鎖を遮断）
+        if (!cell.isMine && !cell.isCard && cell.neighborMines === 0) {
             const neighbors = getNeighbors(x, y, this.cols, this.rows);
             for (const { x: nx, y: ny } of neighbors) {
-                const more = this.reveal(nx, ny, true); // 再帰は常に flood fill
+                const more = this.reveal(nx, ny, true);
                 changed.push(...more);
             }
         }
