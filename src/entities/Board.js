@@ -91,8 +91,13 @@ export default class Board {
         this.revealedCount++;
         const changed = [cell];
 
-        // カードマス自身を flood fill の起点にしない（隣接カードへの連鎖を遮断）
-        if (!cell.isMine && !cell.isCard && cell.neighborMines === 0) {
+        // 隣接に未開封カードマスがあれば flood fill をここで停止する
+        // （neighborMines はカードマスを地雷としてカウントしないため、
+        //   カード隣接セルが nm=0 になって連鎖を中継してしまう問題を防ぐ）
+        const adjacentCard = getNeighbors(x, y, this.cols, this.rows)
+            .some(({ x: nx, y: ny }) => this.grid[ny][nx].isCard && !this.grid[ny][nx].isRevealed);
+
+        if (!cell.isMine && !cell.isCard && cell.neighborMines === 0 && !adjacentCard) {
             const neighbors = getNeighbors(x, y, this.cols, this.rows);
             for (const { x: nx, y: ny } of neighbors) {
                 const more = this.reveal(nx, ny, true);
