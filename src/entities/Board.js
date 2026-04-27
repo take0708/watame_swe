@@ -74,10 +74,12 @@ export default class Board {
 
     // TASK-06メソッド
 
-    reveal(x, y) {
+    reveal(x, y, isFloodFill = false) {
         if (x < 0 || x >= this.cols || y < 0 || y >= this.rows) return [];
         const cell = this.grid[y][x];
         if (cell.isRevealed || cell.isFlagged) return [];
+        // flood fill 時はカードマスを開かずスキップ（直接クリックは通常開封）
+        if (isFloodFill && cell.isCard) return [];
 
         cell.isRevealed = true;
         this.revealedCount++;
@@ -86,7 +88,7 @@ export default class Board {
         if (!cell.isMine && cell.neighborMines === 0) {
             const neighbors = getNeighbors(x, y, this.cols, this.rows);
             for (const { x: nx, y: ny } of neighbors) {
-                const more = this.reveal(nx, ny);
+                const more = this.reveal(nx, ny, true); // 再帰は常に flood fill
                 changed.push(...more);
             }
         }
