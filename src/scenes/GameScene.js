@@ -203,12 +203,16 @@ export default class GameScene extends Phaser.Scene {
         const changed = this.board.reveal(rx, ry);
         this._updateCells(changed);
 
-        // カードマス開封
-        if (cell.isCard) {
-            this.cardMgr.addCard(cell.cardId);
-            const uiScene = this.scene.get('UIScene');
-            if (uiScene && uiScene.refresh) uiScene.refresh();
+        // changed リスト内のカードマスをすべて取得（flood fill 経由分も含む）
+        const uiScene = this.scene.get('UIScene');
+        let cardAcquired = false;
+        for (const c of changed) {
+            if (c.isCard) {
+                this.cardMgr.addCard(c.cardId);
+                cardAcquired = true;
+            }
         }
+        if (cardAcquired && uiScene && uiScene.refresh) uiScene.refresh();
 
         if (this.board.isCleared()) this._onStageClear();
     }
