@@ -84,22 +84,19 @@ export default class Board {
         if (x < 0 || x >= this.cols || y < 0 || y >= this.rows) return [];
         const cell = this.grid[y][x];
         if (cell.isRevealed || cell.isFlagged) return [];
-        // flood fill 時はカードマスを開かずスキップ（直接クリックは通常開封）
+        // flood fill 時はカードマスを開かない（直接クリックは通常どおり開封）
         if (isFloodFill && cell.isCard) return [];
 
         cell.isRevealed = true;
         this.revealedCount++;
         const changed = [cell];
 
-        // 隣接に未開封カードマスがあれば flood fill をここで停止する
-        // （neighborMines はカードマスを地雷としてカウントしないため、
-        //   カード隣接セルが nm=0 になって連鎖を中継してしまう問題を防ぐ）
-        const adjacentCard = getNeighbors(x, y, this.cols, this.rows)
-            .some(({ x: nx, y: ny }) => this.grid[ny][nx].isCard && !this.grid[ny][nx].isRevealed);
-
-        if (!cell.isMine && !cell.isCard && cell.neighborMines === 0 && !adjacentCard) {
+        // カードマス自身は flood fill を起点にしない
+        if (!cell.isMine && !cell.isCard && cell.neighborMines === 0) {
             const neighbors = getNeighbors(x, y, this.cols, this.rows);
             for (const { x: nx, y: ny } of neighbors) {
+                // ループ内でも明示的にカードマスへの伝播をスキップ
+                if (this.grid[ny][nx].isCard) continue;
                 const more = this.reveal(nx, ny, true);
                 changed.push(...more);
             }
