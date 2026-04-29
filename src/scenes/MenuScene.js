@@ -12,24 +12,28 @@ export default class MenuScene extends Phaser.Scene {
 
         this.add.text(400, 180, 'わためは悪くないよねぇ', {
             fontSize: '28px', fill: '#ffffff', padding: { top: 6 },
+            stroke: '#000000', strokeThickness: 4,
         }).setOrigin(0.5);
 
         this.add.text(400, 225, 'デッキ構築型マインスイーパ', {
-            fontSize: '16px', fill: '#aaaaaa', padding: { top: 6 },
+            fontSize: '16px', fill: '#ffe8b0', padding: { top: 6 },
+            stroke: '#000000', strokeThickness: 2,
         }).setOrigin(0.5);
 
         const startBtn = this.add.text(400, 330, 'ゲームを始める', {
             fontSize: '36px', fill: '#ffdd00', padding: { top: 6 },
+            stroke: '#000000', strokeThickness: 4,
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
         startBtn.on('pointerover',  () => startBtn.setStyle({ fill: '#ffffff' }));
         startBtn.on('pointerout',   () => startBtn.setStyle({ fill: '#ffdd00' }));
         startBtn.on('pointerdown',  () => this._startGame());
 
         const helpBtn = this.add.text(400, 395, 'ゲーム説明', {
-            fontSize: '20px', fill: '#88aacc', padding: { top: 6 },
+            fontSize: '20px', fill: '#aaccff', padding: { top: 6 },
+            stroke: '#000000', strokeThickness: 2,
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
         helpBtn.on('pointerover',  () => helpBtn.setStyle({ fill: '#ffffff' }));
-        helpBtn.on('pointerout',   () => helpBtn.setStyle({ fill: '#88aacc' }));
+        helpBtn.on('pointerout',   () => helpBtn.setStyle({ fill: '#aaccff' }));
         helpBtn.on('pointerdown',  () => this._showHelp());
     }
 
