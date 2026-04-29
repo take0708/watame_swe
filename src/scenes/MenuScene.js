@@ -248,7 +248,7 @@ export default class MenuScene extends Phaser.Scene {
 
             container.add(this.add.text(x - PW / 2 + 16, y + 6, def.desc, {
                 fontSize: '12px', color: '#b8cce0',
-                wordWrap: { width: PW - 24 },
+                wordWrap: { width: PW - 32, useAdvancedWrap: true },
             }));
         });
     }
