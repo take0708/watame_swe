@@ -194,8 +194,8 @@ export default class GameScene extends Phaser.Scene {
                 return;
             }
             // リヴァイブ発動 → 地雷セルを表示するが爆発しない
+            // 地雷マスは revealedCount に含めない（isCleared の対象は非地雷マスのみ）
             cell.isRevealed = true;
-            this.board.revealedCount++;
             this._updateCells([cell]);
             return;
         }
@@ -302,11 +302,10 @@ export default class GameScene extends Phaser.Scene {
     _onStageClear() {
         this.input.enabled = false;
 
-        this.tweens.add({
-            targets: this.sound.get('bgm'),
-            volume: 0,
-            duration: 1000,
-        });
+        const bgmSound = this.sound.get('bgm');
+        if (bgmSound) {
+            this.tweens.add({ targets: bgmSound, volume: 0, duration: 1000 });
+        }
 
         this.add.text(400, 280, 'STAGE CLEAR!', {
             fontSize: '56px', fill: '#ffdd00', stroke: '#000000', strokeThickness: 8,
