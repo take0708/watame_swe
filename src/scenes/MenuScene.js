@@ -26,7 +26,7 @@ export default class MenuScene extends Phaser.Scene {
         startBtn.on('pointerdown',  () => this._startGame());
 
         const helpBtn = this.add.text(400, 395, 'ゲーム説明', {
-            fontSize: '20px', fill: '#88aacc',
+            fontSize: '20px', fill: '#88aacc', padding: { top: 6 },
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
         helpBtn.on('pointerover',  () => helpBtn.setStyle({ fill: '#ffffff' }));
         helpBtn.on('pointerout',   () => helpBtn.setStyle({ fill: '#88aacc' }));
