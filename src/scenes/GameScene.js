@@ -227,6 +227,18 @@ export default class GameScene extends Phaser.Scene {
     enterMineMoveMode(cardIndex) {
         this.isMineMoveMode    = true;
         this.mineMoveCardIndex = cardIndex;
+
+        this._mineMoveHintBg = this.add.graphics().setDepth(100);
+        this._mineMoveHintBg.fillStyle(0x000000, 0.72).fillRoundedRect(170, 8, 460, 28, 6);
+        this._mineMoveHintText = this.add.text(400, 22,
+            '移動させる地雷マスをクリック　　ESC: キャンセル',
+            { fontSize: '13px', color: '#ffdd88', fontStyle: 'bold' }
+        ).setOrigin(0.5).setDepth(101);
+    }
+
+    _clearMineMoveHint() {
+        if (this._mineMoveHintBg)   { this._mineMoveHintBg.destroy();   this._mineMoveHintBg = null; }
+        if (this._mineMoveHintText) { this._mineMoveHintText.destroy(); this._mineMoveHintText = null; }
     }
 
     _handleMineMovePick(x, y) {
@@ -235,6 +247,7 @@ export default class GameScene extends Phaser.Scene {
 
         const result = this.board.moveMine(x, y);
         this.isMineMoveMode = false;
+        this._clearMineMoveHint();
 
         if (result) {
             const affected = [];
@@ -254,6 +267,7 @@ export default class GameScene extends Phaser.Scene {
     _cancelMineMove() {
         if (!this.isMineMoveMode) return;
         this.isMineMoveMode = false;
+        this._clearMineMoveHint();
         // カードを手札に戻す
         this.cardMgr.hand.splice(this.mineMoveCardIndex, 0, { id: 'MINE_MOVE' });
         const uiScene = this.scene.get('UIScene');
