@@ -11,15 +11,15 @@ export default class MenuScene extends Phaser.Scene {
         this.add.image(400, 300, _randomBg()).setDisplaySize(800, 600);
 
         this.add.text(400, 180, 'わためは悪くないよねぇ', {
-            fontSize: '28px', fill: '#ffffff',
+            fontSize: '28px', fill: '#ffffff', padding: { top: 6 },
         }).setOrigin(0.5);
 
         this.add.text(400, 225, 'デッキ構築型マインスイーパ', {
-            fontSize: '16px', fill: '#aaaaaa',
+            fontSize: '16px', fill: '#aaaaaa', padding: { top: 6 },
         }).setOrigin(0.5);
 
         const startBtn = this.add.text(400, 330, 'ゲームを始める', {
-            fontSize: '36px', fill: '#ffdd00',
+            fontSize: '36px', fill: '#ffdd00', padding: { top: 6 },
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
         startBtn.on('pointerover',  () => startBtn.setStyle({ fill: '#ffffff' }));
         startBtn.on('pointerout',   () => startBtn.setStyle({ fill: '#ffdd00' }));
