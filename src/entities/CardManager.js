@@ -93,9 +93,8 @@ export default class CardManager {
             case 'MINE_SEARCH_3':
                 changedCells = this._useMineSearch(board, 3);
                 break;
-            case 'MINE_MOVE':
-                // MineMove は GameScene 経由で処理するため、ここでは何もしない
-                break;
+            // case 'MINE_MOVE': // 一時無効化
+            //     break;
         }
 
         if (uiScene && uiScene.refresh) uiScene.refresh();

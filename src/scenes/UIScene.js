@@ -133,15 +133,15 @@ export default class UIScene extends Phaser.Scene {
         if (!card) return;
         const gameScene = this.scene.get('GameScene');
 
-        if (card.id === 'MINE_MOVE') {
-            this.cardMgr.removeCard(index);
-            gameScene.enterMineMoveMode(index);
-            this.refresh();
-        } else {
+        // if (card.id === 'MINE_MOVE') { // 一時無効化
+        //     this.cardMgr.removeCard(index);
+        //     gameScene.enterMineMoveMode(index);
+        //     this.refresh();
+        // } else {
             const changed = this.cardMgr.useCard(index, this.board, this);
             if (changed && changed.length > 0 && gameScene) gameScene._updateCells(changed);
             this.refresh();
-        }
+        // }
     }
 
     // 説明モーダル（右クリック）

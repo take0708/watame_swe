@@ -13,8 +13,8 @@ export default class GameScene extends Phaser.Scene {
     init(data) {
         this.playerState   = data.playerState;
         this.currentStage  = STAGES[this.playerState.stage - 1];
-        this.isMineMoveMode     = false;
-        this.mineMoveCardIndex  = -1;
+        // this.isMineMoveMode     = false;  // 一時無効化（マインムーブ）
+        // this.mineMoveCardIndex  = -1;
     }
 
     create() {
@@ -40,8 +40,8 @@ export default class GameScene extends Phaser.Scene {
         this.input.mouse.disableContextMenu();
         this.input.on('pointerdown', this._onPointerDown, this);
 
-        // ESCキー（マインムーブキャンセル）
-        this.input.keyboard.on('keydown-ESC', this._cancelMineMove, this);
+        // ESCキー（マインムーブキャンセル） 一時無効化
+        // this.input.keyboard.on('keydown-ESC', this._cancelMineMove, this);
 
         // BGM
         try { this.sound.play('bgm', { loop: true }); } catch (e) {}
@@ -168,10 +168,10 @@ export default class GameScene extends Phaser.Scene {
 
         if (gridX < 0 || gridX >= this.board.cols || gridY < 0 || gridY >= this.board.rows) return;
 
-        if (this.isMineMoveMode) {
-            this._handleMineMovePick(gridX, gridY);
-            return;
-        }
+        // if (this.isMineMoveMode) { // 一時無効化（マインムーブ）
+        //     this._handleMineMovePick(gridX, gridY);
+        //     return;
+        // }
 
         if (pointer.rightButtonDown()) {
             this._handleFlag(gridX, gridY);
@@ -222,8 +222,7 @@ export default class GameScene extends Phaser.Scene {
         this._updateCells([this.board.grid[y][x]]);
     }
 
-    // ── マインムーブモード ─────────────────────────────────
-
+    /* ── マインムーブモード（一時無効化） ────────────────────
     enterMineMoveMode(cardIndex) {
         this.isMineMoveMode    = true;
         this.mineMoveCardIndex = cardIndex;
@@ -273,6 +272,7 @@ export default class GameScene extends Phaser.Scene {
         const uiScene = this.scene.get('UIScene');
         if (uiScene && uiScene.refresh) uiScene.refresh();
     }
+    */
 
     // ── 勝敗 / ステージ進行（TASK-11）──────────────────────
 
