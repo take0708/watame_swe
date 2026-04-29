@@ -18,14 +18,14 @@ export default class MenuScene extends Phaser.Scene {
             fontSize: '16px', fill: '#aaaaaa',
         }).setOrigin(0.5);
 
-        const startBtn = this.add.text(400, 330, 'START', {
+        const startBtn = this.add.text(400, 330, 'ゲームを始める', {
             fontSize: '36px', fill: '#ffdd00',
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
         startBtn.on('pointerover',  () => startBtn.setStyle({ fill: '#ffffff' }));
         startBtn.on('pointerout',   () => startBtn.setStyle({ fill: '#ffdd00' }));
         startBtn.on('pointerdown',  () => this._startGame());
 
-        const helpBtn = this.add.text(400, 395, '? HELP', {
+        const helpBtn = this.add.text(400, 395, 'ゲーム説明', {
             fontSize: '20px', fill: '#88aacc',
         }).setOrigin(0.5).setInteractive({ useHandCursor: true });
         helpBtn.on('pointerover',  () => helpBtn.setStyle({ fill: '#ffffff' }));
