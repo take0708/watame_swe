@@ -37,24 +37,20 @@ export default class Board {
             this.grid[y][x].isMine = true;
         }
 
-        // Step 3: カードマス配置（カード同士が隣接しないよう間隔を確保）
-        const nonMine = allCoords.filter(({ x, y }) => !this.grid[y][x].isMine);
+        // Step 3: neighborMines 計算（カード配置の絞り込みに必要）
+        this._recalcAllNeighbors();
+
+        // Step 4: カードマス配置（neighborMines >= 1 のマスのみ = flood fill が届かない保証）
+        const nonMine = allCoords.filter(({ x, y }) => !this.grid[y][x].isMine && this.grid[y][x].neighborMines >= 1);
         shuffleArray(nonMine);
         const cardKeys = Object.keys(CARDS);
         let placed = 0;
         for (let i = 0; i < nonMine.length && placed < cardCount; i++) {
             const { x, y } = nonMine[i];
-            // 隣接8マスにすでにカードがあればスキップ
-            const hasAdjacentCard = getNeighbors(x, y, cols, rows)
-                .some(({ x: nx, y: ny }) => this.grid[ny][nx].isCard);
-            if (hasAdjacentCard) continue;
             this.grid[y][x].isCard = true;
             this.grid[y][x].cardId = cardKeys[Math.floor(Math.random() * cardKeys.length)];
             placed++;
         }
-
-        // Step 4: neighborMines 計算
-        this._recalcAllNeighbors();
     }
 
     _recalcAllNeighbors() {
