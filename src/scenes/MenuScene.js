@@ -212,18 +212,20 @@ export default class MenuScene extends Phaser.Scene {
     // ── カード一覧ページ ──────────────────────────────────
 
     _buildCardsPage(container) {
-        const positions = [
-            { x: 205, y: 195 },
-            { x: 595, y: 195 },
-            { x: 205, y: 390 },
-            { x: 595, y: 390 },
-        ];
+        const cards = Object.values(CARDS);
+        const count = cards.length;
+        // カード数に応じた配置（現在3枚：上段2枚 + 下段中央1枚）
+        const positions = count <= 2
+            ? [{ x: 205, y: 290 }, { x: 595, y: 290 }]
+            : count === 3
+                ? [{ x: 205, y: 200 }, { x: 595, y: 200 }, { x: 400, y: 400 }]
+                : [{ x: 205, y: 200 }, { x: 595, y: 200 }, { x: 205, y: 410 }, { x: 595, y: 410 }];
 
-        Object.values(CARDS).forEach((def, i) => {
+        cards.forEach((def, i) => {
             const { x, y } = positions[i];
             const theme    = CARD_THEMES[def.id];
             const typeMeta = TYPE_META[def.type] ?? { label: '', color: '#ffffff' };
-            const PW = 340, PH = 160;
+            const PW = 340, PH = 185;
 
             const panel = this.add.graphics();
             panel.fillStyle(theme.bg).fillRoundedRect(x - PW / 2, y - PH / 2, PW, PH, 10);
